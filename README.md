@@ -131,5 +131,5 @@ GO
 
 | Nombre  | GitHub |
 |--------:|:------:|
-| Jessica | [@Jess15](https://github.com/Wikiniki15) |
-| Tomás   | [@TomOnt](https://github.com/tom-ayu) |
+| Jessica Olalla | [@Jess15](https://github.com/Wikiniki15) |
+| Tomás Ontaneda | [@TomOnt](https://github.com/tom-ayu) |
