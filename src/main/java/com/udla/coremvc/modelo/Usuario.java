@@ -1,4 +1,4 @@
-package com.udla.proyectofin_web_mvc.modelo;
+package com.udla.coremvc.modelo;
 
 import jakarta.persistence.*;
 

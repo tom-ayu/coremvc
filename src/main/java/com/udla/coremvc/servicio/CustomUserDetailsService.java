@@ -1,7 +1,7 @@
-package com.udla.proyectofin_web_mvc.servicio;
+package com.udla.coremvc.servicio;
 
-import com.udla.proyectofin_web_mvc.modelo.Usuario;
-import com.udla.proyectofin_web_mvc.repositorio.UsuarioRepository;
+import com.udla.coremvc.modelo.Usuario;
+import com.udla.coremvc.repositorio.UsuarioRepository;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

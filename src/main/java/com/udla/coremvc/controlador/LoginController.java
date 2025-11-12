@@ -1,7 +1,7 @@
-package com.udla.proyectofin_web_mvc.controlador;
+package com.udla.coremvc.controlador;
 
-import com.udla.proyectofin_web_mvc.modelo.Usuario;
-import com.udla.proyectofin_web_mvc.servicio.UsuarioService;
+import com.udla.coremvc.modelo.Usuario;
+import com.udla.coremvc.servicio.UsuarioService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

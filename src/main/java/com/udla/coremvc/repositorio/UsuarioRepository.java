@@ -1,6 +1,6 @@
-package com.udla.proyectofin_web_mvc.repositorio;
+package com.udla.coremvc.repositorio;
 
-import com.udla.proyectofin_web_mvc.modelo.Usuario;
+import com.udla.coremvc.modelo.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {

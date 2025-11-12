@@ -1,4 +1,4 @@
-package com.udla.proyectofin_web_mvc;
+package com.udla.coremvc;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

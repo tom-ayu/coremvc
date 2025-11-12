@@ -1,11 +1,11 @@
-package com.udla.proyectofin_web_mvc;
+package com.udla.coremvc;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.boot.CommandLineRunner;
-import com.udla.proyectofin_web_mvc.repositorio.UsuarioRepository;
-import com.udla.proyectofin_web_mvc.modelo.Usuario;
+import com.udla.coremvc.repositorio.UsuarioRepository;
+import com.udla.coremvc.modelo.Usuario;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication

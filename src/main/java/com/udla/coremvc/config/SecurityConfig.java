@@ -1,6 +1,6 @@
-package com.udla.proyectofin_web_mvc.config;
+package com.udla.coremvc.config;
 
-import com.udla.proyectofin_web_mvc.servicio.CustomUserDetailsService;
+import com.udla.coremvc.servicio.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
