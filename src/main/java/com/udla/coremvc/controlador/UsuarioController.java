@@ -40,7 +40,7 @@ public class UsuarioController {
         return "usuarios/form";
     }
 
-    @GetMapping("/eliminar/{id}")
+    @PostMapping("/eliminar/{id}")
     public String eliminarUsuario(@PathVariable Long id) {
         usuarioService.eliminar(id);
         return "redirect:/usuarios";
