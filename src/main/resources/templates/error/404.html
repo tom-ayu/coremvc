@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Página No Encontrada</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .error-box {
+            background: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 500px;
+        }
+        .error-code {
+            font-size: 72px;
+            font-weight: bold;
+            color: #FF9800;
+            margin: 0;
+        }
+        .error-title {
+            font-size: 24px;
+            color: #333;
+            margin: 20px 0;
+        }
+        .error-message {
+            color: #666;
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+        .btn-container {
+            margin-top: 30px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 0 5px;
+            transition: background-color 0.3s;
+        }
+    </style>
+</head>
+<body>
+<div class="error-box">
+    <h1 class="error-code">404</h1>
+    <h2 class="error-title">Página No Encontrada</h2>
+    <p class="error-message">
+        La página que buscas no existe o ha sido movida.<br>
+        Verifica la URL e intenta nuevamente.
+    </p>
+    <div class="btn-container">
+        <a th:href="@{/home}" class="btn">Volver al Inicio</a>
+    </div>
+</div>
+</body>
+</html>

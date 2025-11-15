@@ -8,20 +8,40 @@
         table { width: 100%; border-collapse: collapse; background: #fff; margin-top: 10px; }
         th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
         th { background-color: #4CAF50; color: white; }
-        a { text-decoration: none; color: white; padding: 5px 10px; border-radius: 5px; }
+        a, button.btn {
+            font-family: Arial, sans-serif;
+            text-decoration: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            display: inline-block;
+        }
         .btn { background-color: #4CAF50; }
-        button.btn { border: none; cursor: pointer; }
-        button.btn-delete:hover { background-color: #d32f2f; }
         .btn-delete { background-color: #f44336; }
         .btn-new { background-color: #007BFF; }
         .btn-container { width: 100%; margin: 10px 0; text-align: right; }
     </style>
 </head>
 <body>
+<div style="text-align: right; margin-bottom: 20px;">
+    <span style="margin-right: 15px; color: #666;">
+        Usuario: <strong th:text="${#authentication.name}">Admin</strong>
+    </span>
+    <form th:action="@{/logout}" method="post" style="display: inline;">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <button type="submit" style="background-color: #f44336; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">
+            Cerrar Sesión
+        </button>
+    </form>
+</div>
 
 <h2>Lista de Usuarios</h2>
 
 <div class="btn-container">
+    <a th:href="@{/home}" class="btn" style="background-color: #666;">Volver al Inicio</a>
     <a th:href="@{/usuarios/nuevo}" class="btn btn-new">Nuevo Usuario</a>
 </div>
 
