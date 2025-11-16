@@ -60,14 +60,13 @@
             <groupId>org.thymeleaf.extras</groupId>
             <artifactId>thymeleaf-extras-springsecurity6</artifactId>
         </dependency>
-		<!-- SQL Server
+		<!-- SQL Server -->
 		<dependency>
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>mssql-jdbc</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		-->
-        <!-- H2 Database para producción (en memoria) -->
+        <!-- H2 Database para producción -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>

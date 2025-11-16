@@ -32,7 +32,6 @@ public class Proyecto {
     @Column(name = "porcentaje_qa", nullable = false)
     private Double porcentajeQA;
 
-    // Relación con Tareas: descomentar!! y mira abajo
     // @OneToMany(mappedBy = "proyecto", cascade = CascadeType.ALL)
     // private List<Tarea> tareas;
 
@@ -80,5 +79,11 @@ public class Proyecto {
         this.porcentajeQA = porcentajeQA;
     }
 
-    // Genera getter/setter para Tareas aquí
+    /*public List<Tarea> getTareas() {
+        return tareas;
+    }
+
+    public void setTareas(List<Tarea> tareas) {
+        this.tareas = tareas;
+    }*/
 }

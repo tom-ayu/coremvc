@@ -30,7 +30,6 @@ public class Recurso {
     @Column(name = "costo_hora", nullable = false)
     private Double costoHora;
 
-    // Relación con Tareas: descomentar!! y mira abajo
     // @OneToMany(mappedBy = "recurso", cascade = CascadeType.ALL)
     // private List<Tarea> tareas;
 
@@ -78,5 +77,11 @@ public class Recurso {
         this.costoHora = costoHora;
     }
 
-    // Genera getter/setter para Tareas aquí
+    /*public List<Tarea> getTareas() {
+        return tareas;
+    }
+
+    public void setTareas(List<Tarea> tareas) {
+        this.tareas = tareas;
+    }*/
 }
