@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Tareas</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f2f2f2; }
+        table { width: 100%; border-collapse: collapse; background: #fff; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #4CAF50; color: white; }
+        .btn { text-decoration: none; color: white; padding: 5px 10px; border-radius: 5px;
+               border: none; cursor: pointer; }
+        .btn-green { background-color: #4CAF50; }
+        .btn-blue { background-color: #007BFF; }
+        .btn-red { background-color: #f44336; }
+        .btn-gray { background-color: #666; }
+        .header { text-align: right; margin-bottom: 20px; }
+        .btn-container { margin: 20px 0; }
+        .badge { padding: 3px 8px; border-radius: 3px; font-size: 12px; color: white; }
+        .badge-todo { background-color: #6c757d; }
+        .badge-progress { background-color: #ffc107; }
+        .badge-done { background-color: #28a745; }
+        .badge-low { background-color: #17a2b8; }
+        .badge-medium { background-color: #fd7e14; }
+        .badge-high { background-color: #dc3545; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <span style="margin-right: 15px; color: #666;">
+        Usuario: <strong th:text="${#authentication.name}">Admin</strong>
+    </span>
+    <form th:action="@{/logout}" method="post" style="display: inline;">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <button type="submit" class="btn btn-red">Cerrar Sesión</button>
+    </form>
+</div>
+
+<h2>Lista de Tareas</h2>
+
+<div class="btn-container">
+    <a th:href="@{/home}" class="btn btn-gray">Volver al Inicio</a>
+    <a th:href="@{/tareas/nuevo}" class="btn btn-blue">Nueva Tarea</a>
+</div>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Título</th>
+        <th>Proyecto</th>
+        <th>Recurso</th>
+        <th>Estado</th>
+        <th>Prioridad</th>
+        <th>Horas (Est/Real)</th>
+        <th>Reabierta</th>
+        <th>Acciones</th>
+    </tr>
+    <tr th:each="t : ${tareas}">
+        <td th:text="${t.id}"></td>
+        <td th:text="${t.titulo}"></td>
+        <td th:text="${t.proyecto.nombre}"></td>
+        <td th:text="${t.recurso.nombre}"></td>
+        <td>
+            <span class="badge"
+                  th:classappend="${t.estado == 'TO_DO' ? 'badge-todo' : (t.estado == 'IN_PROGRESS' ? 'badge-progress' : 'badge-done')}"
+                  th:text="${t.estado}"></span>
+        </td>
+        <td>
+            <span class="badge"
+                  th:classappend="${t.prioridad == 'LOW' ? 'badge-low' : (t.prioridad == 'MEDIUM' ? 'badge-medium' : 'badge-high')}"
+                  th:text="${t.prioridad}"></span>
+        </td>
+        <td th:text="${t.originalEstimate + ' / ' + t.tiempoReal}"></td>
+        <td th:text="${t.vecesReabierta}"></td>
+        <td>
+            <a th:href="@{'/tareas/editar/' + ${t.id}}" class="btn btn-green">Editar</a>
+            <form th:action="@{'/tareas/eliminar/' + ${t.id}}" method="post" style="display: inline;">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <button type="submit" class="btn btn-red"
+                        onclick="return confirm('¿Eliminar esta tarea?');">Eliminar</button>
+            </form>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

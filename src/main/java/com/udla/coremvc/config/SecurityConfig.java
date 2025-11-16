@@ -48,6 +48,7 @@ public class SecurityConfig {
                         .requestMatchers("/usuarios/**").hasRole("ADMIN")
                         .requestMatchers("/proyectos/**").hasRole("ADMIN")
                         .requestMatchers("/recursos/**").hasRole("ADMIN")
+                        .requestMatchers("/tareas/**").hasRole("ADMIN")
                         .requestMatchers("/home").authenticated()
                         .anyRequest().authenticated()
                 )

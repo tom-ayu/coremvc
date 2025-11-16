@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario Tarea</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f2f2f2; padding: 40px; }
+        form { background: #fff; padding: 20px; border-radius: 8px; max-width: 500px; margin: 0 auto; }
+        input, select { width: 100%; padding: 8px; margin: 8px 0; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background: #4CAF50; color: white;
+                 border: none; cursor: pointer; margin-top: 10px; }
+        label { font-weight: bold; display: block; margin-top: 10px; }
+        .error { color: red; font-size: 12px; }
+    </style>
+</head>
+<body>
+
+<h2 style="text-align: center;"
+    th:text="${tarea.id} == null ? 'Nueva Tarea' : 'Editar Tarea'"></h2>
+
+<form th:action="@{/tareas}" th:object="${tarea}" method="post">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <input type="hidden" th:field="*{id}" />
+
+    <label>Título:</label>
+    <input type="text" th:field="*{titulo}" required />
+    <span class="error" th:if="${#fields.hasErrors('titulo')}" th:errors="*{titulo}"></span>
+
+    <label>Proyecto:</label>
+    <select th:field="*{proyecto}" required>
+        <option value="">-- Seleccionar Proyecto --</option>
+        <option th:each="p : ${proyectos}"
+                th:value="${p.id}"
+                th:text="${p.nombre}">Proyecto</option>
+    </select>
+    <span class="error" th:if="${#fields.hasErrors('proyecto')}" th:errors="*{proyecto}"></span>
+
+    <label>Recurso Asignado:</label>
+    <select th:field="*{recurso}" required>
+        <option value="">-- Seleccionar Recurso --</option>
+        <option th:each="r : ${recursos}"
+                th:value="${r.id}"
+                th:text="${r.nombre + ' (' + r.rol + ')'}">Recurso</option>
+    </select>
+    <span class="error" th:if="${#fields.hasErrors('recurso')}" th:errors="*{recurso}"></span>
+
+    <label>Estado:</label>
+    <select th:field="*{estado}" required>
+        <option value="">-- Seleccionar Estado --</option>
+        <option value="TO_DO">TO_DO</option>
+        <option value="IN_PROGRESS">IN_PROGRESS</option>
+        <option value="DONE">DONE</option>
+    </select>
+    <span class="error" th:if="${#fields.hasErrors('estado')}" th:errors="*{estado}"></span>
+
+    <label>Prioridad:</label>
+    <select th:field="*{prioridad}" required>
+        <option value="">-- Seleccionar Prioridad --</option>
+        <option value="LOW">LOW</option>
+        <option value="MEDIUM">MEDIUM</option>
+        <option value="HIGH">HIGH</option>
+    </select>
+    <span class="error" th:if="${#fields.hasErrors('prioridad')}" th:errors="*{prioridad}"></span>
+
+    <label>Original Estimate (horas):</label>
+    <input type="number" th:field="*{originalEstimate}" min="1" required />
+    <span class="error" th:if="${#fields.hasErrors('originalEstimate')}" th:errors="*{originalEstimate}"></span>
+
+    <label>Tiempo Real (horas):</label>
+    <input type="number" th:field="*{tiempoReal}" min="0" required />
+    <span class="error" th:if="${#fields.hasErrors('tiempoReal')}" th:errors="*{tiempoReal}"></span>
+
+    <label>Veces Reabierta:</label>
+    <input type="number" th:field="*{vecesReabierta}" min="0" required />
+    <span class="error" th:if="${#fields.hasErrors('vecesReabierta')}" th:errors="*{vecesReabierta}"></span>
+
+    <button type="submit">Guardar</button>
+</form>
+
+<div style="text-align: center; margin-top: 15px;">
+    <a th:href="@{/tareas}">Volver a la lista</a>
+</div>
+
+</body>
+</html>
