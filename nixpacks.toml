@@ -1,0 +1,11 @@
+[phases.setup]
+nixPkgs = ['...', 'maven', 'jdk17']
+
+[phases.build]
+cmds = ['mvn clean install -DskipTests']
+
+[phases.install]
+dependsOn = ['build']
+
+[start]
+cmd = 'java -Dserver.port=$PORT -Dspring.profiles.active=prod -jar target/coremvc.jar'
