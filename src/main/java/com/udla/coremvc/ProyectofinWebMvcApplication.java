@@ -14,7 +14,6 @@ public class ProyectofinWebMvcApplication {
 		SpringApplication.run(ProyectofinWebMvcApplication.class, args);
 	}
 
-    // Crea usuario admin si no existe, facilita pruebas sin SQL
     @Bean
     public CommandLineRunner dataLoader(UsuarioRepository repo, PasswordEncoder encoder) {
         return args -> {
