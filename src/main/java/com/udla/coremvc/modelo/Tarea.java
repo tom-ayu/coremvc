@@ -1,0 +1,125 @@
+package com.udla.coremvc.modelo;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+
+@Entity
+@Table(name = "tareas")
+public class Tarea {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotBlank(message = "El título es obligatorio")
+    @Column(name = "titulo", nullable = false)
+    private String titulo;
+
+    @NotNull(message = "El estimado original es obligatorio")
+    @Min(value = 1, message = "El estimado original debe ser mayor a 0")
+    @Column(name = "original_estimate", nullable = false)
+    private Integer originalEstimate;
+
+    @NotNull(message = "El tiempo real es obligatorio")
+    @Min(value = 0, message = "El tiempo real no puede ser negativo")
+    @Column(name = "tiempo_real", nullable = false)
+    private Integer tiempoReal;
+
+    @NotBlank(message = "El estado es obligatorio")
+    @Column(name = "estado", nullable = false)
+    private String estado; // TO_DO, IN_PROGRESS, DONE
+
+    @NotBlank(message = "La prioridad es obligatoria")
+    @Column(name = "prioridad", nullable = false)
+    private String prioridad; // LOW, MEDIUM, HIGH
+
+    @NotNull(message = "Veces reabierta es obligatorio")
+    @Min(value = 0, message = "Veces reabierta no puede ser negativo")
+    @Column(name = "veces_reabierta", nullable = false)
+    private Integer vecesReabierta;
+
+    @ManyToOne
+    @JoinColumn(name = "proyecto_id", nullable = false)
+    @NotNull(message = "Debe seleccionar un proyecto")
+    private Proyecto proyecto;
+
+    @ManyToOne
+    @JoinColumn(name = "recurso_id", nullable = false)
+    @NotNull(message = "Debe seleccionar un recurso")
+    private Recurso recurso;
+
+    public Tarea() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public Integer getOriginalEstimate() {
+        return originalEstimate;
+    }
+
+    public void setOriginalEstimate(Integer originalEstimate) {
+        this.originalEstimate = originalEstimate;
+    }
+
+    public Integer getTiempoReal() {
+        return tiempoReal;
+    }
+
+    public void setTiempoReal(Integer tiempoReal) {
+        this.tiempoReal = tiempoReal;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getPrioridad() {
+        return prioridad;
+    }
+
+    public void setPrioridad(String prioridad) {
+        this.prioridad = prioridad;
+    }
+
+    public Integer getVecesReabierta() {
+        return vecesReabierta;
+    }
+
+    public void setVecesReabierta(Integer vecesReabierta) {
+        this.vecesReabierta = vecesReabierta;
+    }
+
+    public Proyecto getProyecto() {
+        return proyecto;
+    }
+
+    public void setProyecto(Proyecto proyecto) {
+        this.proyecto = proyecto;
+    }
+
+    public Recurso getRecurso() {
+        return recurso;
+    }
+
+    public void setRecurso(Recurso recurso) {
+        this.recurso = recurso;
+    }
+}
