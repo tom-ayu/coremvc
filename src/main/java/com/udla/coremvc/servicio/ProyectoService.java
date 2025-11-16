@@ -28,6 +28,17 @@ public class ProyectoService {
 
     // Guardar proyecto (crear o actualizar)
     public void guardar(Proyecto proyecto) {
+
+        if (proyecto.getPresupuestoTotal() != null && proyecto.getPresupuestoTotal() > 1000000) {
+            throw new IllegalArgumentException("El presupuesto no puede exceder $1,000,000");
+        }
+        if (proyecto.getHorasEstimadas() != null && proyecto.getPorcentajeQA() != null) {
+            // Validar que las horas de QA no excedan el total
+            double horasQA = proyecto.getHorasEstimadas() * proyecto.getPorcentajeQA();
+            if (horasQA > proyecto.getHorasEstimadas()) {
+                throw new IllegalArgumentException("Las horas de QA no pueden exceder las horas totales");
+            }
+        }
         proyectoRepository.save(proyecto);
     }
 

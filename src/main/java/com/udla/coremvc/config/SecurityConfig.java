@@ -44,12 +44,15 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/register", "/", "/css/**", "/js/**", "/images/**").permitAll()
+
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/usuarios/**").hasRole("ADMIN")
                         .requestMatchers("/proyectos/**").hasRole("ADMIN")
                         .requestMatchers("/recursos/**").hasRole("ADMIN")
                         .requestMatchers("/tareas/**").hasRole("ADMIN")
+
                         .requestMatchers("/home").authenticated()
+
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -65,7 +68,9 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .exceptionHandling(exception -> exception
-                        .accessDeniedPage("/error/403")
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            response.sendRedirect("/error/403");
+                        })
                 );
         return http.build();
     }
