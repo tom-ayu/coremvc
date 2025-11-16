@@ -2,6 +2,8 @@
 
 🌐 **Demo en vivo:** https://coremvc-lute.onrender.com/login
 
+🎥 **Video explicativo:** https://youtu.be/RBRhDk59vPY
+
 ---
 
 ## **Tabla de contenidos**
