@@ -14,7 +14,7 @@ public class ProyectofinWebMvcApplication {
 		SpringApplication.run(ProyectofinWebMvcApplication.class, args);
 	}
 
-    @Bean
+    /*@Bean
     public CommandLineRunner dataLoader(UsuarioRepository repo, PasswordEncoder encoder) {
         return args -> {
             if (repo.findByUsername("admin") == null) {
@@ -26,6 +26,5 @@ public class ProyectofinWebMvcApplication {
                 repo.save(admin);
             }
         };
-    }
-
+    }*/
 }
