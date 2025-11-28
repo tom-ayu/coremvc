@@ -26,8 +26,10 @@ public class Tarea {
     private Integer tiempoReal;
 
     @NotBlank(message = "El estado es obligatorio")
+    @Pattern(regexp = "TO_DO|IN_PROGRESS|QA_REVIEW|DONE|REOPENED",
+            message = "Estado debe ser: TO_DO, IN_PROGRESS, QA_REVIEW, DONE o REOPENED")
     @Column(name = "estado", nullable = false)
-    private String estado; // TO_DO, IN_PROGRESS, DONE
+    private String estado;
 
     @NotBlank(message = "La prioridad es obligatoria")
     @Column(name = "prioridad", nullable = false)
@@ -121,5 +123,30 @@ public class Tarea {
 
     public void setRecurso(Recurso recurso) {
         this.recurso = recurso;
+    }
+
+
+    public Double calcularTiempoAjustado() {
+        if (this.proyecto == null || this.tiempoReal == null || this.originalEstimate == null) {
+            return 0.0;
+        }
+
+        double penalizacion = this.vecesReabierta * this.originalEstimate * this.proyecto.getPorcentajeQA();
+        return this.tiempoReal + penalizacion;
+    }
+
+    public Double calcularEficiencia() {
+        Double tiempoAjustado = calcularTiempoAjustado();
+
+        if (tiempoAjustado == null || tiempoAjustado == 0.0 || this.originalEstimate == null) {
+            return 0.0;
+        }
+
+        return this.originalEstimate / tiempoAjustado;
+    }
+
+    public void reabrirTarea() {
+        this.vecesReabierta++;
+        this.estado = "REOPENED";
     }
 }

@@ -47,9 +47,11 @@
     <label>Estado:</label>
     <select th:field="*{estado}" required>
         <option value="">-- Seleccionar Estado --</option>
-        <option value="TO_DO">TO_DO</option>
-        <option value="IN_PROGRESS">IN_PROGRESS</option>
-        <option value="DONE">DONE</option>
+        <option value="TO_DO">Por Hacer (TO_DO)</option>
+        <option value="IN_PROGRESS">En Progreso (IN_PROGRESS)</option>
+        <option value="QA_REVIEW">En Revisión QA (QA_REVIEW)</option>
+        <option value="DONE">Completado (DONE)</option>
+        <option value="REOPENED">Reabierto (REOPENED)</option>
     </select>
     <span class="error" th:if="${#fields.hasErrors('estado')}" th:errors="*{estado}"></span>
 
