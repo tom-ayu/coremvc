@@ -30,8 +30,8 @@ public class Recurso {
     @Column(name = "costo_hora", nullable = false)
     private Double costoHora;
 
-    // @OneToMany(mappedBy = "recurso", cascade = CascadeType.ALL)
-    // private List<Tarea> tareas;
+    @OneToMany(mappedBy = "recurso", cascade = CascadeType.ALL)
+    private List<Tarea> tareas;
 
     public Recurso() {
     }
@@ -77,11 +77,41 @@ public class Recurso {
         this.costoHora = costoHora;
     }
 
-    /*public List<Tarea> getTareas() {
+    public List<Tarea> getTareas() {
         return tareas;
     }
 
     public void setTareas(List<Tarea> tareas) {
         this.tareas = tareas;
-    }*/
+    }
+
+    public Double calcularCargaTrabajo() {
+        if (this.tareas == null || this.tareas.isEmpty()) {
+            return 0.0;
+        }
+
+        double horasAsignadas = 0.0;
+
+        for (Tarea tarea : this.tareas) {
+            // Solo contar tareas que no están completadas
+            if (!"DONE".equals(tarea.getEstado()) && tarea.getOriginalEstimate() != null) {
+                horasAsignadas += tarea.getOriginalEstimate();
+            }
+        }
+
+        return horasAsignadas;
+    }
+
+    public Double calcularPorcentajeCarga() {
+        if (this.horasDisponibles == null || this.horasDisponibles == 0) {
+            return 0.0;
+        }
+
+        Double cargaTrabajo = calcularCargaTrabajo();
+        return (cargaTrabajo / this.horasDisponibles) * 100;
+    }
+
+    public Boolean estaSobrecargado() {
+        return calcularPorcentajeCarga() > 100;
+    }
 }
