@@ -53,4 +53,20 @@ public class TareaService {
     public List<Recurso> obtenerRecursos() {
         return recursoRepository.findAll();
     }
+
+    public void reabrirTarea(Long tareaId) {
+        Tarea tarea = tareaRepository.findById(tareaId)
+                .orElseThrow(() -> new RuntimeException("Tarea no encontrada"));
+
+        tarea.reabrirTarea();
+        tareaRepository.save(tarea);
+    }
+
+    public void registrarTiempo(Long tareaId, Integer tiempoReal) {
+        Tarea tarea = tareaRepository.findById(tareaId)
+                .orElseThrow(() -> new RuntimeException("Tarea no encontrada"));
+
+        tarea.setTiempoReal(tiempoReal);
+        tareaRepository.save(tarea);
+    }
 }

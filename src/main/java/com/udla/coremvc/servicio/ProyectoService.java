@@ -3,6 +3,8 @@ package com.udla.coremvc.servicio;
 import com.udla.coremvc.modelo.Proyecto;
 import com.udla.coremvc.repositorio.ProyectoRepository;
 import org.springframework.stereotype.Service;
+import com.udla.coremvc.dto.ProyectoDTO;
+import java.util.ArrayList;
 
 import java.util.List;
 
@@ -45,5 +47,25 @@ public class ProyectoService {
     // Eliminar proyecto por ID
     public void eliminar(Long id) {
         proyectoRepository.deleteById(id);
+    }
+
+    public List<ProyectoDTO> obtenerProyectosConEficiencia() {
+        List<Proyecto> proyectos = proyectoRepository.findAll();
+        List<ProyectoDTO> proyectosDTO = new ArrayList<>();
+
+        for (Proyecto p : proyectos) {
+            ProyectoDTO dto = new ProyectoDTO(
+                    p.getId(),
+                    p.getNombre(),
+                    p.calcularEficiencia(),
+                    p.calcularCostoReal(),
+                    p.calcularDesviacion(),
+                    p.getPresupuestoTotal(),
+                    p.estaEnRiesgo()
+            );
+            proyectosDTO.add(dto);
+        }
+
+        return proyectosDTO;
     }
 }

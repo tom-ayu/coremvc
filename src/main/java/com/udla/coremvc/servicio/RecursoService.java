@@ -3,6 +3,8 @@ package com.udla.coremvc.servicio;
 import com.udla.coremvc.modelo.Recurso;
 import com.udla.coremvc.repositorio.RecursoRepository;
 import org.springframework.stereotype.Service;
+import com.udla.coremvc.dto.RecursoDTO;
+import java.util.ArrayList;
 
 import java.util.List;
 
@@ -34,5 +36,25 @@ public class RecursoService {
     // Eliminar recurso por ID
     public void eliminar(Long id) {
         recursoRepository.deleteById(id);
+    }
+
+    public List<RecursoDTO> obtenerRecursosConCarga() {
+        List<Recurso> recursos = recursoRepository.findAll();
+        List<RecursoDTO> recursosDTO = new ArrayList<>();
+
+        for (Recurso r : recursos) {
+            RecursoDTO dto = new RecursoDTO(
+                    r.getId(),
+                    r.getNombre(),
+                    r.getRol(),
+                    r.calcularCargaTrabajo(),
+                    r.getHorasDisponibles(),
+                    r.calcularPorcentajeCarga(),
+                    r.estaSobrecargado()
+            );
+            recursosDTO.add(dto);
+        }
+
+        return recursosDTO;
     }
 }
