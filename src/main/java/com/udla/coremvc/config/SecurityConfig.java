@@ -49,7 +49,8 @@ public class SecurityConfig {
                         .requestMatchers("/usuarios/**").hasRole("ADMIN")
                         .requestMatchers("/proyectos/**").hasRole("ADMIN")
                         .requestMatchers("/recursos/**").hasRole("ADMIN")
-                        .requestMatchers("/tareas/**").hasRole("ADMIN")
+                        .requestMatchers("/tareas/nuevo", "/tareas/editar/**", "/tareas/eliminar/**").hasRole("ADMIN")
+                        .requestMatchers("/tareas", "/tareas/{id}/registrar-tiempo").hasAnyRole("ADMIN", "USER")
                         .requestMatchers("/dashboard/**").hasRole("ADMIN")
                         .requestMatchers("/home").authenticated()
 

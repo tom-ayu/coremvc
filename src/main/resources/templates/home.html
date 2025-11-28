@@ -121,10 +121,14 @@
         </div>
     </div>
 
+    <!-- Contenido para USER -->
     <div sec:authorize="hasRole('USER')">
-        <div class="welcome">
-            <p>Bienvenido al Sistema CORE.</p>
-            <p>Aún no tienes módulos asignados.</p>
+        <div class="cards">
+            <div class="card">
+                <h3>Mis Tareas</h3>
+                <p>Visualiza y registra tiempo en tus tareas asignadas.</p>
+                <a th:href="@{/tareas}" class="btn">Ir a Tareas</a>
+            </div>
         </div>
     </div>
 </div>

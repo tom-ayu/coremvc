@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/tareas")
@@ -66,6 +68,29 @@ public class TareaController {
     @PostMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Long id) {
         tareaService.eliminar(id);
+        return "redirect:/tareas";
+    }
+
+    @GetMapping("/{id}/registrar-tiempo")
+    public String mostrarFormularioTiempo(@PathVariable Long id, Model model) {
+        Tarea tarea = tareaService.buscarPorId(id);
+        if (tarea == null) {
+            return "redirect:/tareas";
+        }
+        model.addAttribute("tarea", tarea);
+        return "tareas/registrar-tiempo";
+    }
+
+    @PostMapping("/{id}/registrar-tiempo")
+    public String registrarTiempo(@PathVariable Long id,
+                                  @RequestParam Integer tiempoReal,
+                                  RedirectAttributes redirectAttributes) {
+        try {
+            tareaService.registrarTiempo(id, tiempoReal);
+            redirectAttributes.addFlashAttribute("mensaje", "Tiempo registrado correctamente");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al registrar tiempo: " + e.getMessage());
+        }
         return "redirect:/tareas";
     }
 }
