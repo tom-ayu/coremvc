@@ -50,7 +50,7 @@ public class SecurityConfig {
                         .requestMatchers("/proyectos/**").hasRole("ADMIN")
                         .requestMatchers("/recursos/**").hasRole("ADMIN")
                         .requestMatchers("/tareas/**").hasRole("ADMIN")
-
+                        .requestMatchers("/dashboard/**").hasRole("ADMIN")
                         .requestMatchers("/home").authenticated()
 
                         .anyRequest().authenticated()
