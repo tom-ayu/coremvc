@@ -75,7 +75,17 @@
                   th:text="${t.prioridad}"></span>
         </td>
         <td th:text="${t.originalEstimate + ' / ' + t.tiempoReal}"></td>
-        <td th:text="${t.vecesReabierta}"></td>
+
+        <td>
+            <span th:if="${t.vecesReabierta == 0}" style="color: #4CAF50;">
+                0
+            </span>
+                    <span th:if="${t.vecesReabierta > 0}"
+                          style="color: #f44336; font-weight: bold;">
+                [[${t.vecesReabierta}]]
+            </span>
+        </td>
+
         <td>
             <!-- Botón Registrar Tiempo: solo para USER -->
             <a sec:authorize="hasRole('USER')"

@@ -3,7 +3,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Inicio</title>
+    <title>Inicio - Sistema CORE</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -33,8 +33,8 @@
             cursor: pointer;
         }
         .container {
-            max-width: 1000px;
-            margin: 40px auto;
+            max-width: 1200px;
+            margin: 20px auto;
             padding: 0 20px;
         }
         .welcome {
@@ -42,11 +42,14 @@
             padding: 20px;
             margin-bottom: 30px;
         }
-        .welcome h2 { margin: 0; }
+        .welcome h2 { margin: 0 0 10px 0; }
+
+        /* Tarjetas de módulos */
         .cards {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
+            margin-bottom: 30px;
         }
         .card {
             background: white;
@@ -62,7 +65,86 @@
             color: white;
             text-decoration: none;
         }
-        .btn-disabled { background-color: #ccc; cursor: not-allowed; }
+
+        /* Dashboard integrado */
+        .seccion {
+            background: white;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+        }
+        .seccion h2 {
+            margin: 0 0 15px 0;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        /* Badges de estado */
+        .badge {
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .badge-green {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .badge-yellow {
+            background-color: #FFC107;
+            color: #333;
+        }
+        .badge-red {
+            background-color: #f44336;
+            color: white;
+        }
+
+        /* Sección de alerta */
+        .alerta-riesgo {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .alerta-riesgo h3 {
+            margin: 0 0 10px 0;
+            color: #856404;
+        }
+        .sin-riesgo {
+            background-color: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .sin-riesgo h3 {
+            margin: 0;
+            color: #155724;
+        }
+        .dashboard-title {
+            background: white;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2196F3;
+        }
+        .dashboard-title h2 {
+            margin: 0;
+            color: #2196F3;
+        }
     </style>
 </head>
 <body>
@@ -86,8 +168,10 @@
         <h2>Bienvenido, <span th:text="${#authentication.name}">Usuario</span></h2>
     </div>
 
-
+    <!-- Contenido para ADMIN: Módulos + Dashboard -->
     <div sec:authorize="hasRole('ADMIN')">
+
+        <!-- Módulos de gestión -->
         <div class="cards">
             <div class="card">
                 <h3>Gestión de Usuarios</h3>
@@ -112,12 +196,97 @@
                 <p>Gestiona las tareas asignadas.</p>
                 <a th:href="@{/tareas}" class="btn">Ir a Tareas</a>
             </div>
+        </div>
 
-            <div class="card">
-                <h3>Dashboard</h3>
-                <p>Métricas de eficiencia, carga y riesgo.</p>
-                <a th:href="@{/dashboard}" class="btn">Ir a Dashboard</a>
-            </div>
+        <!-- Dashboard integrado -->
+        <div class="dashboard-title">
+            <h2>📊 Métricas del Sistema</h2>
+        </div>
+
+        <!-- SECCIÓN: Proyectos en Riesgo -->
+        <div th:if="${proyectosEnRiesgo != null && proyectosEnRiesgo.size() > 0}" class="alerta-riesgo">
+            <h3>⚠️ Proyectos en Riesgo ([[${proyectosEnRiesgo.size()}]])</h3>
+            <ul style="margin: 10px 0 0 20px;">
+                <li th:each="p : ${proyectosEnRiesgo}">
+                    <strong th:text="${p.nombre}"></strong> -
+                    Eficiencia: <span th:text="${#numbers.formatDecimal(p.eficiencia * 100, 1, 2) + '%'}"></span> |
+                    Desviación: $<span th:text="${#numbers.formatDecimal(p.desviacion, 1, 2)}"></span>
+                </li>
+            </ul>
+        </div>
+
+        <div th:if="${proyectosEnRiesgo == null || proyectosEnRiesgo.size() == 0}" class="sin-riesgo">
+            <h3>✅ No hay proyectos en riesgo actualmente</h3>
+        </div>
+
+        <!-- SECCIÓN 1: Eficiencia de Proyectos -->
+        <div class="seccion" th:if="${proyectos != null && proyectos.size() > 0}">
+            <h2>📊 Eficiencia de Proyectos</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>Proyecto</th>
+                    <th>Presupuesto</th>
+                    <th>Costo Real</th>
+                    <th>Desviación</th>
+                    <th>Eficiencia</th>
+                    <th>Estado</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="p : ${proyectos}">
+                    <td th:text="${p.nombre}"></td>
+                    <td th:text="${'$' + #numbers.formatDecimal(p.presupuestoTotal, 1, 2)}"></td>
+                    <td th:text="${'$' + #numbers.formatDecimal(p.costoReal, 1, 2)}"></td>
+                    <td>
+                        <span th:text="${'$' + #numbers.formatDecimal(p.desviacion, 1, 2)}"
+                              th:style="${p.desviacion > 0 ? 'color: red; font-weight: bold;' : 'color: green;'}">
+                        </span>
+                    </td>
+                    <td th:text="${#numbers.formatDecimal(p.eficiencia * 100, 1, 2) + '%'}"></td>
+                    <td>
+                        <span th:class="${p.eficiencia >= 1.0 ? 'badge badge-green' :
+                                         p.eficiencia >= 0.8 ? 'badge badge-yellow' :
+                                         'badge badge-red'}">
+                            [[${p.eficiencia >= 1.0 ? 'Excelente' :
+                                 p.eficiencia >= 0.8 ? 'Aceptable' :
+                                 'Bajo'}]]
+                        </span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- SECCIÓN 2: Carga de Recursos -->
+        <div class="seccion" th:if="${recursos != null && recursos.size() > 0}">
+            <h2>👨‍💼 Carga de Recursos</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>Recurso</th>
+                    <th>Rol</th>
+                    <th>Horas Asignadas</th>
+                    <th>Horas Disponibles</th>
+                    <th>Carga %</th>
+                    <th>Estado</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="r : ${recursos}">
+                    <td th:text="${r.nombre}"></td>
+                    <td th:text="${r.rol}"></td>
+                    <td th:text="${#numbers.formatDecimal(r.cargaTrabajo, 1, 0) + 'h'}"></td>
+                    <td th:text="${r.horasDisponibles + 'h'}"></td>
+                    <td th:text="${#numbers.formatDecimal(r.porcentajeCarga, 1, 0) + '%'}"></td>
+                    <td>
+                        <span th:class="${r.sobrecargado ? 'badge badge-red' : 'badge badge-green'}">
+                            [[${r.sobrecargado ? 'SOBRECARGADO' : 'OK'}]]
+                        </span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 

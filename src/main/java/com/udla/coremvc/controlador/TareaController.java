@@ -53,14 +53,12 @@ public class TareaController {
     public String guardar(@Valid @ModelAttribute("tarea") Tarea tarea,
                           BindingResult result,
                           Model model) {
-        // Si hay errores de validación, volver al formulario
         if (result.hasErrors()) {
-            // Re-cargar listas para los dropdowns
+            // Recargar listas para los dropdowns en caso de error
             model.addAttribute("proyectos", tareaService.obtenerProyectos());
             model.addAttribute("recursos", tareaService.obtenerRecursos());
             return "tareas/form";
         }
-
         tareaService.guardar(tarea);
         return "redirect:/tareas";
     }

@@ -35,10 +35,9 @@ public class Tarea {
     @Column(name = "prioridad", nullable = false)
     private String prioridad; // LOW, MEDIUM, HIGH
 
-    @NotNull(message = "Veces reabierta es obligatorio")
     @Min(value = 0, message = "Veces reabierta no puede ser negativo")
-    @Column(name = "veces_reabierta", nullable = false)
-    private Integer vecesReabierta;
+    @Column(name = "veces_reabierta")
+    private Integer vecesReabierta = 0;
 
     @ManyToOne
     @JoinColumn(name = "proyecto_id", nullable = false)
@@ -130,8 +129,10 @@ public class Tarea {
         if (this.proyecto == null || this.tiempoReal == null || this.originalEstimate == null) {
             return 0.0;
         }
+        // Protección contra vecesReabierta null
+        int veces = (this.vecesReabierta != null) ? this.vecesReabierta : 0;
 
-        double penalizacion = this.vecesReabierta * this.originalEstimate * this.proyecto.getPorcentajeQA();
+        double penalizacion = veces * this.originalEstimate * this.proyecto.getPorcentajeQA();
         return this.tiempoReal + penalizacion;
     }
 
@@ -145,6 +146,7 @@ public class Tarea {
         return this.originalEstimate / tiempoAjustado;
     }
 
+    // Metodo para reabir tarea. Suma el contador y cambia el estado correspondiente a la tarea.
     public void reabrirTarea() {
         this.vecesReabierta++;
         this.estado = "REOPENED";
