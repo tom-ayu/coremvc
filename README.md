@@ -1,34 +1,24 @@
 # **Sistema CORE - Gestor de Eficiencia Operativa de Proyectos**
 
-🌐 **Demo en vivo:** https://coremvc-lute.onrender.com/login
-
-🎥 **Video explicativo:** https://youtu.be/RBRhDk59vPY
+🌐 **Deploy público:** https://coremvc-lute.onrender.com/login
 
 ---
 
 ## **Tabla de contenidos**
 
-* [Descripción](#descripción)
-* [Estado del proyecto](#estado-del-proyecto)
-* [Características principales](#características-principales)
-* [Tecnologías usadas](#tecnologías-usadas)
-* [Requisitos](#requisitos)
-* [Instalación y ejecución](#instalación-y-ejecución)
-* [Configuración de la base de datos](#configuración-de-la-base-de-datos)
-* [Arquitectura del sistema](#arquitectura-del-sistema)
-* [Credenciales de acceso](#credenciales-de-acceso)
-* [Deploy en producción](#deploy-en-producción)
-* [Autores](#autores)
+- [Descripción](#descripción)
+- [Estado del proyecto](#estado-del-proyecto)
+- [Características principales](#características-principales)
+- [Tecnologías usadas](#tecnologías-usadas)
+- [Instalación y ejecución](#instalación-y-ejecución)
+- [Autores](#autores)
 
 ---
 
 ## **Descripción**
 
-> Aplicación web desarrollada con **Java 21 y Spring Boot** para la gestión integral de proyectos, recursos humanos y tareas con seguimiento de tiempos y estados.
+> App web desarrollada con Java 21 y Spring Boot para la gestión integral de proyectos de software, recursos y tareas, permitiendo calcular métricas clave como eficiencia de proyectos, carga de recursos y riesgos mediante parámetros como % de QA, reaperturas, horas estimadas vs reales, tiempo ajustado y desviación.
 
-**Propósito:** Facilitar la gestión operativa mediante seguimiento de presupuestos, horas estimadas/reales y asignación de recursos.
-
-**Motivación:** Crear un sistema robusto con validaciones en back-end, relaciones entre entidades y seguridad basada en roles, listo para producción.
 
 ---
 
@@ -37,8 +27,8 @@
 Estructura principal y Administrador completo y desplegado en producción.
 
 Incluye:
-- Autenticación/Autorización con Spring Security
-- Roles ADMIN/USER
+- Autenticación con Spring Security (uso de Roles)
+- Hasheo de contraseñas con Spring Security (BCrypt)
 - Gestión de **Usuarios**, **Proyectos**, **Recursos** y **Tareas**
 - Deploy en Render (con Docker)
 - MS SQL Server local, H2 en producción
