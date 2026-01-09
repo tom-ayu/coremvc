@@ -1,21 +1,27 @@
 package com.udla.coremvc.controlador;
 
 import com.udla.coremvc.modelo.Proyecto;
-import com.udla.coremvc.servicio.ProyectoService;
+import com.udla.coremvc.servicio.GeneradorReportes;
+import com.udla.coremvc.servicio.IProyectoService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ResponseBody;
+import com.udla.coremvc.modelo.ReporteProyecto;
 
 @Controller
 @RequestMapping("/proyectos")
 public class ProyectoController {
 
-    private final ProyectoService proyectoService;
+    private final IProyectoService proyectoService;
+    private final GeneradorReportes generadorReportes;
 
-    public ProyectoController(ProyectoService proyectoService) {
+    public ProyectoController(IProyectoService proyectoService,
+                              GeneradorReportes generadorReportes) {
         this.proyectoService = proyectoService;
+        this.generadorReportes = generadorReportes;
     }
 
     @GetMapping
@@ -57,5 +63,15 @@ public class ProyectoController {
     public String eliminar(@PathVariable Long id) {
         proyectoService.eliminar(id);
         return "redirect:/proyectos";
+    }
+
+    @GetMapping("/reporte/{id}")
+    @ResponseBody
+    public ReporteProyecto generarReporte(@PathVariable Long id) {
+        Proyecto proyecto = proyectoService.buscarPorId(id);
+        if (proyecto == null) {
+            throw new RuntimeException("Proyecto no encontrado");
+        }
+        return generadorReportes.generarReporteCompleto(proyecto);
     }
 }

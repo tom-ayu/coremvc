@@ -2,53 +2,60 @@ package com.udla.coremvc.servicio;
 
 import com.udla.coremvc.modelo.Proyecto;
 import com.udla.coremvc.repositorio.ProyectoRepository;
+import com.udla.coremvc.servicio.estrategias.*;
+import com.udla.coremvc.servicio.analisis.AnalizadorRiesgos;
+import com.udla.coremvc.servicio.validacion.ValidadorProyecto;
 import org.springframework.stereotype.Service;
 import com.udla.coremvc.dto.ProyectoDTO;
 import java.util.ArrayList;
-
 import java.util.List;
 
 @Service
-public class ProyectoService {
+public class ProyectoService implements IProyectoService {
 
     private final ProyectoRepository proyectoRepository;
+    private final ValidadorProyecto validadorProyecto;
+    private final EficienciaStrategy eficienciaStrategy;
+    private final CostoRealStrategy costoRealStrategy;
+    private final DesviacionStrategy desviacionStrategy;
+    private final AnalizadorRiesgos analizadorRiesgos;
 
-    // Inyección de dependencias por constructor
-    public ProyectoService(ProyectoRepository proyectoRepository) {
+    public ProyectoService(ProyectoRepository proyectoRepository,
+                           ValidadorProyecto validadorProyecto,
+                           EficienciaStrategy eficienciaStrategy,
+                           CostoRealStrategy costoRealStrategy,
+                           DesviacionStrategy desviacionStrategy,
+                           AnalizadorRiesgos analizadorRiesgos) {
         this.proyectoRepository = proyectoRepository;
+        this.validadorProyecto = validadorProyecto;
+        this.eficienciaStrategy = eficienciaStrategy;
+        this.costoRealStrategy = costoRealStrategy;
+        this.desviacionStrategy = desviacionStrategy;
+        this.analizadorRiesgos = analizadorRiesgos;
     }
 
-    // Listar todos los proyectos
+    @Override
     public List<Proyecto> listarProyectos() {
         return proyectoRepository.findAll();
     }
 
-    // Buscar proyecto por ID
+    @Override
     public Proyecto buscarPorId(Long id) {
         return proyectoRepository.findById(id).orElse(null);
     }
 
-    // Guardar proyecto (crear o actualizar)
+    @Override
     public void guardar(Proyecto proyecto) {
-
-        if (proyecto.getPresupuestoTotal() != null && proyecto.getPresupuestoTotal() > 1000000) {
-            throw new IllegalArgumentException("El presupuesto no puede exceder $1,000,000");
-        }
-        if (proyecto.getHorasEstimadas() != null && proyecto.getPorcentajeQA() != null) {
-            // Validar que las horas de QA no excedan el total
-            double horasQA = proyecto.getHorasEstimadas() * proyecto.getPorcentajeQA();
-            if (horasQA > proyecto.getHorasEstimadas()) {
-                throw new IllegalArgumentException("Las horas de QA no pueden exceder las horas totales");
-            }
-        }
+        validadorProyecto.validar(proyecto);
         proyectoRepository.save(proyecto);
     }
 
-    // Eliminar proyecto por ID
+    @Override
     public void eliminar(Long id) {
         proyectoRepository.deleteById(id);
     }
 
+    @Override
     public List<ProyectoDTO> obtenerProyectosConEficiencia() {
         List<Proyecto> proyectos = proyectoRepository.findAll();
         List<ProyectoDTO> proyectosDTO = new ArrayList<>();
@@ -57,11 +64,11 @@ public class ProyectoService {
             ProyectoDTO dto = new ProyectoDTO(
                     p.getId(),
                     p.getNombre(),
-                    p.calcularEficiencia(),
-                    p.calcularCostoReal(),
-                    p.calcularDesviacion(),
+                    eficienciaStrategy.calcular(p),
+                    costoRealStrategy.calcular(p),
+                    desviacionStrategy.calcular(p),
                     p.getPresupuestoTotal(),
-                    p.estaEnRiesgo()
+                    analizadorRiesgos.analizarRiesgo(p)
             );
             proyectosDTO.add(dto);
         }

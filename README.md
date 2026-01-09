@@ -8,6 +8,7 @@
 
 - [Descripción](#descripción)
 - [Estado del proyecto](#estado-del-proyecto)
+- [Arquitectura y Principios de Diseño](#arquitectura-y-principios-de-diseño)
 - [Características principales](#características-principales)
 - [Tecnologías usadas](#tecnologías-usadas)
 - [Instalación y ejecución](#instalación-y-ejecución)
@@ -34,6 +35,99 @@ Incluye:
 - MS SQL Server local, H2 en producción
 
 ---
+
+## **Arquitectura y Principios de Diseño**
+
+### **Principios SOLID Implementados**
+
+#### 1. **Single Responsibility Principle (SRP)**
+
+Cada clase tiene una única responsabilidad:
+
+- **Proyecto.java**: Solo entidad JPA (atributos + getters/setters)
+- **EficienciaStrategy**: Solo calcula la eficiencia
+- **CostoRealStrategy**: Solo calcula el costo real
+- **DesviacionStrategy**: Solo calcula la desviación presupuestaria
+- **AnalizadorRiesgos**: Solo analiza los riesgos del proyecto
+- **ValidadorProyecto**: Solo valida las reglas de negocio
+
+**Beneficios:**
+- Código más mantenible y comprensible
+- Facilita testing unitario
+- Reduce acoplamiento entre componentes
+
+#### 2. **Dependency Inversion Principle (DIP)**
+
+Los módulos de alto nivel dependen de abstracciones, no de implementaciones concretas:
+```java
+// Controller depende de interfaz, no de implementación concreta
+@Controller
+public class ProyectoController {
+    private final IProyectoService proyectoService; // ← Abstracción
+}
+```
+
+**Beneficios:**
+- Facilita testing con mocks
+- Permite cambiar implementaciones sin afectar clientes
+- Reduce acoplamiento entre capas
+
+---
+
+### **Patrones de Diseño Implementados**
+
+#### 1. **Strategy Pattern**
+
+Encapsula diferentes algoritmos de cálculo de métricas en estrategias intercambiables:
+```
+servicio/estrategias/
+├── IMetricaStrategy.java          (Interfaz común)
+├── EficienciaStrategy.java        (Calcula eficiencia)
+├── CostoRealStrategy.java         (Calcula costo real)
+└── DesviacionStrategy.java        (Calcula desviación)
+```
+
+**Ventajas:**
+- Fácil agregar nuevas métricas sin modificar código existente
+- Separación clara de algoritmos
+- Mayor testabilidad
+
+#### 2. **Builder Pattern**
+
+Construcción flexible de objetos complejos con API fluida:
+```java
+// Construcción de reportes paso a paso
+ReporteProyecto reporte = new ReporteProyecto.Builder(id, nombre)
+    .conMetricas(metricas)
+    .conRiesgo(true)
+    .conNivelRiesgo("ALTO")
+    .conDescripcion("Proyecto con desviación presupuestaria")
+    .build();
+```
+
+**Ventajas:**
+- Objetos inmutables (thread-safe)
+- Código más legible
+- Construcción flexible
+
+**Ejemplo de uso:**
+```bash
+# Endpoint para generar reporte
+GET http://localhost:8080/proyectos/reporte/1
+
+# Respuesta JSON:
+{
+  "proyectoId": 1,
+  "nombreProyecto": "Sistema de Ventas",
+  "metricas": {
+    "eficiencia": 0.81,
+    "costoReal": 7895.0,
+    "desviacion": -42105.0
+  },
+  "enRiesgo": true,
+  "nivelRiesgo": "MEDIO"
+}
+```
 
 ## **Características principales**
 
